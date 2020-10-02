@@ -8,6 +8,11 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes: 
       - /home/ubuntu/docker/docker-compose-angkringanhits/config/redis.conf:/usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -h localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   postgre:
     image: postgres:latest
@@ -34,6 +39,8 @@ services:
     container_name: backend
     depends_on: 
       postgre:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     volumes:
       - /home/ubuntu/log:/log
