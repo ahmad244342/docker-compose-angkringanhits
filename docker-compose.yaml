@@ -17,7 +17,7 @@ services:
   postgre:
     image: postgres:latest
     container_name: postgre
-    command: createdb Angkringanhits -U bening && cat /usr/sql/database.sql | psql -d Angkringanhits -U bening
+    command: psql DROP DATABASE Angkringanhits -U bening && psql CREATE DATABASE Angkringanhits -U bening && cat /usr/sql/database.sql | psql -d Angkringanhits -U bening
     networks: 
       - testNet
     environment: 
