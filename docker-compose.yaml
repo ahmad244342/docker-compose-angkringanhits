@@ -12,7 +12,7 @@ services:
   postgre:
     image: postgres:latest
     container_name: postgre
-    command: createdb Angkringanhits -U bening && cat ~/database.sql | psql -d Angkringanhits -U bening
+    command: createdb Angkringanhits -U bening && cat /usr/sql/database.sql | psql -d Angkringanhits -U bening
     networks: 
       - testNet
     environment: 
@@ -22,7 +22,7 @@ services:
     ports: 
       - "5432:5432"
     volumes: 
-      - /home/ubuntu/docker/docker-compose-angkringanhits/database/Angkringanhits.sql:~/database.sql
+      - /home/ubuntu/docker/docker-compose-angkringanhits/database/Angkringanhits.sql:/usr/sql/database.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U bening"]
       interval: 10s
