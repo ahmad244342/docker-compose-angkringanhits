@@ -1,0 +1,58 @@
+version: "3.8"
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    networks: 
+      - testNet
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes: 
+      - /home/ubuntu/docker/config/redis.conf:/usr/local/etc/redis/redis.conf
+
+  postgre:
+    image: postgres:latest
+    container_name: postgre
+    command: createdb Angkringanhits -U bening && cat ~/database.sql | psql -d Angkringanhits -U bening
+    networks: 
+      - testNet
+    environment: 
+      POSTGRES_PASSWORD: Karyaanakdesa632
+      POSTGRES_USER: bening
+      POSTGRES_DB: bening
+    ports: 
+      - "5432:5432"
+    volumes: 
+      - /home/ubuntu/docker/database/Angkringanhits.sql:~/database.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bening"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    image: backendangkringanhits:latest
+    container_name: backend
+    depends_on: 
+      postgre:
+        condition: service_healthy
+    volumes:
+      - /home/ubuntu/log:/log
+    ports:
+      - "3000:3000"
+    networks: 
+      - testNet
+    environment: 
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASS: safrudin
+      POSTGRE_USER: bening
+      POSTGRE_PASSWORD: Karyaanakdesa632
+      POSTGRE_DB: Angkringanhits
+      POSTGRE_HOST: postgre
+      POSTGRE_PORT: 5432
+      CLOUDINARY_CLOUD: angkringanhits
+      CLOUDINARY_KEY: 133374334785943
+      CLOUDINARY_SECRET: Inv8mxM9R0PitK1EW2WoJh8hGvE
+
+networks: 
+  testNet:
