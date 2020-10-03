@@ -46,7 +46,7 @@ services:
     image: backendangkringanhits:latest
     container_name: backend
     depends_on: 
-      - server
+      server:
       redis:
         condition: service_healthy
     volumes:
