@@ -17,7 +17,6 @@ services:
   postgre:
     image: postgres:latest
     container_name: postgre
-    command: sleep 5 && pg_restore -U bening -d Angkringanhits /usr/sql/database.sql &
     networks: 
       - testNet
     environment: 
@@ -27,7 +26,7 @@ services:
     ports: 
       - "5432:5432"
     volumes: 
-      - /home/ubuntu/docker/docker-compose-angkringanhits/database/Angkringanhits.sql:/usr/sql/database.sql
+      - /home/ubuntu/docker/docker-compose-angkringanhits/database/Angkringanhits.sql:/docker-entrypoint-initdb.d/database.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U bening"]
       interval: 10s
