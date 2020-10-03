@@ -17,6 +17,7 @@ services:
   postgre:
     image: postgres:latest
     container_name: postgre
+    command: sleep 5 && pg_restore -U bening -d Angkringanhits /usr/sql/database.sql &
     networks: 
       - testNet
     environment: 
@@ -32,8 +33,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    exec:
-      test: ["CMD-SHELL", "sleep 5 && pg_restore -U bening -d Angkringanhits /usr/sql/database.sql &"]
 
   backend:
     image: backendangkringanhits:latest
