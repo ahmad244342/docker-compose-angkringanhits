@@ -33,6 +33,7 @@ services:
   
   server:
     image: ubuntu
+    container_name: server
     depends_on: 
       postgre:
         condition: service_healthy
@@ -46,9 +47,8 @@ services:
     image: backendangkringanhits:latest
     container_name: backend
     depends_on: 
-      server:
-      redis:
-        condition: service_healthy
+      - server
+      - redis
     volumes:
       - /home/ubuntu/log:/log
     ports:
