@@ -30,13 +30,23 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-      
+  
+  server:
+    image: ubuntu
+    depends_on: 
+      postgre:
+        condition: service_healthy
+    volumes: 
+      - /home/ubuntu/docker/docker-compose-angkringanhits/database/Angkringanhits.sql:/usr/sql/database.sql
+    networks: 
+      - testNet
+    command: pg_restore -U bening -d Angkringanhits /usr/sql/database.sql
+
   backend:
     image: backendangkringanhits:latest
     container_name: backend
     depends_on: 
-      postgre:
-        condition: service_healthy
+      - server
       redis:
         condition: service_healthy
     volumes:
