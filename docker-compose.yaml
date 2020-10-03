@@ -33,7 +33,7 @@ services:
       timeout: 5s
       retries: 5
     exec:
-      test: ["CMD-SHELL", "pg_restore -U bening -d Angkringanhits /usr/sql/database.sql"]
+      test: ["CMD-SHELL", "sleep 5 && pg_restore -U bening -d Angkringanhits /usr/sql/database.sql &"]
 
   backend:
     image: backendangkringanhits:latest
