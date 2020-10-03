@@ -25,30 +25,24 @@ services:
       POSTGRES_DB: bening
     ports: 
       - "5432:5432"
+    volumes: 
+      - /home/ubuntu/docker/docker-compose-angkringanhits/database/Angkringanhits.sql:/usr/sql/database.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U bening"]
       interval: 10s
       timeout: 5s
       retries: 5
-  
-  server:
-    image: ubuntu
-    container_name: server
-    depends_on: 
-      postgre:
-        condition: service_healthy
-    volumes: 
-      - /home/ubuntu/docker/docker-compose-angkringanhits/database/Angkringanhits.sql:/usr/sql/database.sql
-    networks: 
-      - testNet
-    command: pg_restore -U bening -d Angkringanhits /usr/sql/database.sql
+    exec:
+      test: ["CMD-SHELL", "pg_restore -U bening -d Angkringanhits /usr/sql/database.sql"]
 
   backend:
     image: backendangkringanhits:latest
     container_name: backend
     depends_on: 
-      - server
-      - redis
+      postgre:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     volumes:
       - /home/ubuntu/log:/log
     ports:
