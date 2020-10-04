@@ -7,7 +7,7 @@ services:
       - testNet
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes: 
-      - /usr/project/docker/Angkringanhits/config/redis.conf:/usr/local/etc/redis/redis.conf
+      - /home/ubuntu/docker/docker-compose-angkringanhits/config/redis.conf:/usr/local/etc/redis/redis.conf
     healthcheck:
       test: ["CMD-SHELL", "redis-cli -h localhost"]
       interval: 10s
