@@ -1,5 +1,6 @@
 FROM postgres
 
-COPY Angkringanhits.sql /docker-entrypoint-initdb.d/Angkringanhits.sql
+COPY restore.sh /docker-entrypoint-initdb.d/restore.sh
+COPY Angkringanhits.sql /usr/sql/Angkringanhits.sql
 
 ENV PGDATA=/data

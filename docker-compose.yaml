@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.6"
 services:
   redis:
     image: redis:latest
@@ -7,7 +7,7 @@ services:
       - testNet
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes: 
-      - /home/ubuntu/docker/docker-compose-angkringanhits/config/redis.conf:/usr/local/etc/redis/redis.conf
+      - /usr/project/docker/Angkringanhits/config/redis.conf:/usr/local/etc/redis/redis.conf
     healthcheck:
       test: ["CMD-SHELL", "redis-cli -h localhost"]
       interval: 10s
@@ -15,20 +15,16 @@ services:
       retries: 5
 
   postgre:
-    image: postgres:latest
+    image: testdb:latest
     container_name: postgre
     networks: 
       - testNet
     environment: 
       POSTGRES_PASSWORD: Karyaanakdesa632
-      POSTGRES_USER: bening
-      POSTGRES_DB: bening
-    ports: 
-      - "5432:5432"
-    volumes: 
-      - /home/ubuntu/docker/docker-compose-angkringanhits/database/Angkringanhits.sql:/docker-entrypoint-initdb.d/database.sql
+      POSTGRES_USER: angkringanhits
+      POSTGRES_DB: Angkringanhits
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U bening"]
+      test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -43,15 +39,13 @@ services:
         condition: service_healthy
     volumes:
       - /home/ubuntu/log:/log
-    ports:
-      - "3000:3000"
     networks: 
       - testNet
     environment: 
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASS: safrudin
-      POSTGRE_USER: bening
+      POSTGRE_USER: angkringanhits
       POSTGRE_PASSWORD: Karyaanakdesa632
       POSTGRE_DB: Angkringanhits
       POSTGRE_HOST: postgre
@@ -59,6 +53,16 @@ services:
       CLOUDINARY_CLOUD: angkringanhits
       CLOUDINARY_KEY: 133374334785943
       CLOUDINARY_SECRET: Inv8mxM9R0PitK1EW2WoJh8hGvE
+  
+  webservice:
+    image: webservice
+    container_name: webservice
+    depends_on: 
+      - backend
+    ports: 
+      - "80:80"
+    networks: 
+      - testNet
 
 networks: 
   testNet:
