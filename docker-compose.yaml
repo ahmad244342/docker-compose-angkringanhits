@@ -8,6 +8,7 @@ services:
       resources:
         limits:
           memory: 50M
+          cpus: '1'
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes: 
       - /home/ubuntu/docker/docker-compose-angkringanhits/config/redis.conf:/usr/local/etc/redis/redis.conf
@@ -25,6 +26,7 @@ services:
       resources:
         limits:
           memory: 200M
+          cpus: '1'
     environment: 
       POSTGRES_PASSWORD: Karyaanakdesa632
       POSTGRES_USER: angkringanhits
@@ -49,6 +51,7 @@ services:
       resources:
         limits:
           memory: 100M
+          cpus: '1'
     environment: 
       REDIS_HOST: redis
       REDIS_PORT: 6379
@@ -79,6 +82,7 @@ services:
       resources:
         limits:
           memory: 200M
+          cpus: '1'
 
 networks: 
   testNet:
