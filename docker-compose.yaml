@@ -76,8 +76,8 @@ services:
       - backend
     ports: 
       - "80:80"
-    networks: 
-      - testNet
+    links: 
+      - backend
     deploy:
       resources:
         limits:
