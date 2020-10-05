@@ -1,4 +1,4 @@
-version: "3.6"
+version: "3.8"
 services:
   redis:
     image: redis:latest
@@ -38,6 +38,11 @@ services:
       - /home/ubuntu/log:/log
     networks: 
       - testNet
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 300M
     environment: 
       REDIS_HOST: redis
       REDIS_PORT: 6379
@@ -50,6 +55,11 @@ services:
       CLOUDINARY_CLOUD: angkringanhits
       CLOUDINARY_KEY: 133374334785943
       CLOUDINARY_SECRET: Inv8mxM9R0PitK1EW2WoJh8hGvE
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:3000/api"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   
   webservice:
     image: webservice
