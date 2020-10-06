@@ -47,7 +47,7 @@ services:
     networks: 
       - testNet
     deploy:
-      replicas: 3
+      replicas: 2
       resources:
         limits:
           memory: 100M
